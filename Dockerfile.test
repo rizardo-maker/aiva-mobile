@@ -1,0 +1,23 @@
+# Test Dockerfile for Railway deployment
+FROM node:20-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --omit=dev
+
+# Copy all files
+COPY . .
+
+# Build TypeScript files
+RUN npm run build
+
+# Check if dist directory exists
+RUN ls -la dist/
+
+# Start the application
+CMD ["node", "dist/index.js"]
